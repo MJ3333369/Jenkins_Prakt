@@ -1,8 +1,9 @@
 def runTests(envTag) {
-    echo "Installing Node.js dependencies..."
+    echo "Instalē Node.js bibliotēkas testēšanai..."
     bat 'npm install'
 
-    echo "Running tests against environment: ${envTag}..."
+    echo "Veic testus pret vidi: ${envTag}..."
     bat "npm run greetings ${envTag}"
 }
+
 return this

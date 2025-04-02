@@ -1,12 +1,14 @@
 def deploy(envName, port) {
-    echo "Stopping existing PM2 process (if any)..."
+    echo "Aptur esošo PM2 procesu, ja tāds eksistē..."
     bat "pm2 delete greetings-app-${envName} || exit 0"
 
-    echo "Starting app with PM2..."
+    echo "Startē aplikāciju ar PM2..."
     bat """
     set PORT=${port}
     pm2 start app.py --name greetings-app-${envName} --interpreter python
     """
+
     bat "pm2 list"
 }
+
 return this

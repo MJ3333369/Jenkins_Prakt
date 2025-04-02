@@ -1,6 +1,6 @@
 def call(String workingDir) {
     dir(workingDir) {
-        echo "Installing Python dependencies from ${workingDir}..."
+        echo "Instalē Python bibliotēkas..."
         bat 'pip install -r requirements.txt'
     }
 }
