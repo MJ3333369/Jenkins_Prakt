@@ -2,91 +2,89 @@ pipeline {
     agent any
 
     environment {
-        PYTHON_ENV = 'greetings'
-        TEST_ENV = 'test-framework'
+        PYTHON_REPO = 'https://github.com/mtararujs/python-greetings'
+        TEST_REPO = 'https://github.com/mtararujs/course-js-api-framework'
     }
 
     stages {
-        stage('Clone Repositories') {
+        stage('install-pip-deps') {
             steps {
-                echo 'Cloning repositories...'
-
-                // Klonē Python mikroservisu
-                git url: 'https://github.com/mtararujs/python-greetings', branch: 'main', changelog: false, poll: false, dir: "${PYTHON_ENV}"
-
-                // Klonē testu sistēmu
-                git url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false, dir: "${TEST_ENV}"
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
+                checkout scm
+                git url: "${PYTHON_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/install.groovy').call()
+                    install.call('./python-greetings')
                 }
             }
         }
 
-        stage('Deploy to Dev') {
+        stage('deploy-to-dev') {
             steps {
+                git url: "${PYTHON_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/deploy.groovy').call('dev', '7001')
+                    deploy.call('./python-greetings', 'dev', '7001')
                 }
             }
         }
 
-        stage('Test on Dev') {
+        stage('tests-on-dev') {
             steps {
+                git url: "${TEST_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/test.groovy').call('greetings_dev')
+                    test.call('./course-js-api-framework', 'greetings_dev')
                 }
             }
         }
 
-        stage('Deploy to Staging') {
+        stage('deploy-to-staging') {
             steps {
+                git url: "${PYTHON_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/deploy.groovy').call('staging', '7002')
+                    deploy.call('./python-greetings', 'staging', '7002')
                 }
             }
         }
 
-        stage('Test on Staging') {
+        stage('tests-on-staging') {
             steps {
+                git url: "${TEST_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/test.groovy').call('greetings_stg')
+                    test.call('./course-js-api-framework', 'greetings_staging')
                 }
             }
         }
 
-        stage('Deploy to Preprod') {
+        stage('deploy-to-preprod') {
             steps {
+                git url: "${PYTHON_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/deploy.groovy').call('preprod', '7003')
+                    deploy.call('./python-greetings', 'preprod', '7003')
                 }
             }
         }
 
-        stage('Test on Preprod') {
+        stage('tests-on-preprod') {
             steps {
+                git url: "${TEST_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/test.groovy').call('greetings_preprod')
+                    test.call('./course-js-api-framework', 'greetings_preprod')
                 }
             }
         }
 
-        stage('Deploy to Prod') {
+        stage('deploy-to-prod') {
             steps {
+                git url: "${PYTHON_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/deploy.groovy').call('prod', '7004')
+                    deploy.call('./python-greetings', 'prod', '7004')
                 }
             }
         }
 
-        stage('Test on Prod') {
+        stage('tests-on-prod') {
             steps {
+                git url: "${TEST_REPO}", changelog: false, poll: false
                 script {
-                    load('jenkins/test.groovy').call('greetings_prod')
+                    test.call('./course-js-api-framework', 'greetings_prod')
                 }
             }
         }
