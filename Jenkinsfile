@@ -1,4 +1,10 @@
 node {
+    // Piespiež klonēt Jenkins_Prakt repozitoriju no jauna
+    stage('checkout-self') {
+        checkout scm
+    }
+
+    // Tikai pēc checkout ielādē groovy failus
     def install = load 'jenkins/install.groovy'
     def deploy = load 'jenkins/deploy.groovy'
     def test = load 'jenkins/test.groovy'
