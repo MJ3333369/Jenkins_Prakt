@@ -4,3 +4,5 @@ def call(String workingDir) {
         bat 'pip install -r requirements.txt'
     }
 }
+
+return this
