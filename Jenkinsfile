@@ -1,11 +1,28 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON_ENV = 'greetings'
+        TEST_ENV = 'test-framework'
+    }
+
     stages {
+        stage('Clone Repositories') {
+            steps {
+                echo 'Cloning repositories...'
+
+                // Klonē Python mikroservisu
+                git url: 'https://github.com/mtararujs/python-greetings', branch: 'main', changelog: false, poll: false, dir: "${PYTHON_ENV}"
+
+                // Klonē testu sistēmu
+                git url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false, dir: "${TEST_ENV}"
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 script {
-                    load 'jenkins/install.groovy'
+                    load('jenkins/install.groovy').call()
                 }
             }
         }
@@ -13,8 +30,7 @@ pipeline {
         stage('Deploy to Dev') {
             steps {
                 script {
-                    load 'jenkins/deploy.groovy'
-                    deploy('dev', 7001)
+                    load('jenkins/deploy.groovy').call('dev', '7001')
                 }
             }
         }
@@ -22,8 +38,7 @@ pipeline {
         stage('Test on Dev') {
             steps {
                 script {
-                    load 'jenkins/test.groovy'
-                    runTests('greetings_dev')
+                    load('jenkins/test.groovy').call('greetings_dev')
                 }
             }
         }
@@ -31,7 +46,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    deploy('staging', 7002)
+                    load('jenkins/deploy.groovy').call('staging', '7002')
                 }
             }
         }
@@ -39,7 +54,7 @@ pipeline {
         stage('Test on Staging') {
             steps {
                 script {
-                    runTests('greetings_stg')
+                    load('jenkins/test.groovy').call('greetings_stg')
                 }
             }
         }
@@ -47,7 +62,7 @@ pipeline {
         stage('Deploy to Preprod') {
             steps {
                 script {
-                    deploy('preprod', 7003)
+                    load('jenkins/deploy.groovy').call('preprod', '7003')
                 }
             }
         }
@@ -55,7 +70,7 @@ pipeline {
         stage('Test on Preprod') {
             steps {
                 script {
-                    runTests('greetings_preprod')
+                    load('jenkins/test.groovy').call('greetings_preprod')
                 }
             }
         }
@@ -63,7 +78,7 @@ pipeline {
         stage('Deploy to Prod') {
             steps {
                 script {
-                    deploy('prod', 7004)
+                    load('jenkins/deploy.groovy').call('prod', '7004')
                 }
             }
         }
@@ -71,7 +86,7 @@ pipeline {
         stage('Test on Prod') {
             steps {
                 script {
-                    runTests('greetings_prod')
+                    load('jenkins/test.groovy').call('greetings_prod')
                 }
             }
         }
