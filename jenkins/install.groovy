@@ -1,7 +1,7 @@
 def call(String workingDir) {
     dir(workingDir) {
         echo "Instalē Python bibliotēkas..."
-        bat '"C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pip.exe" install -r requirements.txt'
+        bat 'powershell -Command "& \\"C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pip.exe\\" install -r requirements.txt"'
     }
 }
 
