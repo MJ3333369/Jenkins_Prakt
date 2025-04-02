@@ -1,9 +1,6 @@
-def call() {
-    stage('Install Dependencies') {
-        echo 'Installing Python dependencies...'
-
-        dir('greetings') {
-            bat 'pip install -r requirements.txt'
-        }
+def call(String workingDir) {
+    dir(workingDir) {
+        echo "Installing Python dependencies from $workingDir..."
+        bat 'pip install -r requirements.txt'
     }
 }

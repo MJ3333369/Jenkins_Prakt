@@ -1,11 +1,8 @@
-def call(String envTag) {
-    stage("Run Tests on ${envTag}") {
-        dir('test-framework') {
-            echo 'Installing Node.js dependencies...'
-            bat 'npm install'
-
-            echo "Running tests against ${envTag}..."
-            bat "npm run greetings ${envTag}"
-        }
+def call(String workingDir, String envTag) {
+    dir(workingDir) {
+        echo "Installing Node.js dependencies..."
+        bat 'npm install'
+        echo "Running tests against environment ${envTag}..."
+        bat "npm run greetings ${envTag}"
     }
 }
