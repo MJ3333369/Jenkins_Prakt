@@ -3,10 +3,10 @@ def run(String env) {
 
     def repo = "https://github.com/mtararujs/course-js-api-framework"
 
-    // Nodro, ka katr posm sk ar tru mapi
+    // Nodrosina, ka katrs posms sak ar tiru mapi
     bat "rmdir /s /q test-framework || exit 0"
 
-    // Klon testanas framework repozitoriju
+    // Klone testesanas framework repozitoriju
     bat "git clone ${repo} test-framework"
 
     dir("test-framework") {
