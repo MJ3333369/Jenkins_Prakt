@@ -3,7 +3,7 @@ def call(String workingDir) {
 
     def repo = "https://github.com/mtararujs/python-greetings"
 
-    // Klonē Python mikroservisu
+    // Klone Python mikropakalpojumu
     bat "git clone ${repo} ${workingDir}"
 
     dir(workingDir) {
