@@ -10,6 +10,7 @@ pipeline {
         stage('prepare-scripts') {
             steps {
                 script {
+                    echo ">>> Loading deploy, install and test scripts"
                     deployScript = load 'jenkins/deploy.groovy'
                     installScript = load 'jenkins/install.groovy'
                     testScript = load 'jenkins/test.groovy'
@@ -21,7 +22,7 @@ pipeline {
             steps {
                 script {
                     echo ">>> Stage: Install dependencies"
-                    installScript('https://github.com/mtararujs/python-greetings')
+                    installScript.install('https://github.com/mtararujs/python-greetings')
                 }
             }
         }
@@ -29,7 +30,7 @@ pipeline {
         stage('deploy-to-dev') {
             steps {
                 script {
-                    echo ">>> Using deploy.groovy for environment: dev"
+                    echo ">>> Deploying to dev"
                     deployScript.deploy('dev', 7001)
                 }
             }
@@ -38,7 +39,7 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    echo ">>> Running tests for dev"
+                    echo ">>> Running tests on dev"
                     testScript.runTests('dev')
                 }
             }
@@ -47,7 +48,7 @@ pipeline {
         stage('deploy-to-staging') {
             steps {
                 script {
-                    echo ">>> Using deploy.groovy for environment: staging"
+                    echo ">>> Deploying to staging"
                     deployScript.deploy('staging', 7002)
                 }
             }
@@ -56,7 +57,7 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    echo ">>> Running tests for staging"
+                    echo ">>> Running tests on staging"
                     testScript.runTests('staging')
                 }
             }
@@ -65,7 +66,7 @@ pipeline {
         stage('deploy-to-preprod') {
             steps {
                 script {
-                    echo ">>> Using deploy.groovy for environment: preprod"
+                    echo ">>> Deploying to preprod"
                     deployScript.deploy('preprod', 7003)
                 }
             }
@@ -74,7 +75,7 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    echo ">>> Running tests for preprod"
+                    echo ">>> Running tests on preprod"
                     testScript.runTests('preprod')
                 }
             }
@@ -83,7 +84,7 @@ pipeline {
         stage('deploy-to-prod') {
             steps {
                 script {
-                    echo ">>> Using deploy.groovy for environment: prod"
+                    echo ">>> Deploying to prod"
                     deployScript.deploy('prod', 7004)
                 }
             }
@@ -92,7 +93,7 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    echo ">>> Running tests for prod"
+                    echo ">>> Running tests on prod"
                     testScript.runTests('prod')
                 }
             }
