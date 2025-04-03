@@ -1,11 +1,17 @@
-def deployScript = load 'jenkins/deploy.groovy'
-def installScript = load 'jenkins/install.groovy'
-def testScript = load 'jenkins/test.groovy'
-
 pipeline {
     agent any
 
     stages {
+        stage('prepare-scripts') {
+            steps {
+                script {
+                    deployScript = load 'jenkins/deploy.groovy'
+                    installScript = load 'jenkins/install.groovy'
+                    testScript = load 'jenkins/test.groovy'
+                }
+            }
+        }
+
         stage('install-pip-deps') {
             steps {
                 script {
@@ -22,7 +28,6 @@ pipeline {
         stage('deploy-to-dev') {
             steps {
                 script {
-                    echo ">>> Stage: Deploy to DEV"
                     deployScript.deploy('dev', 7001)
                 }
             }
@@ -31,7 +36,6 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    echo ">>> Stage: Run tests on DEV"
                     dir('test-framework') {
                         deleteDir()
                     }
@@ -44,7 +48,6 @@ pipeline {
         stage('deploy-to-staging') {
             steps {
                 script {
-                    echo ">>> Stage: Deploy to STAGING"
                     deployScript.deploy('staging', 7002)
                 }
             }
@@ -53,7 +56,6 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    echo ">>> Stage: Run tests on STAGING"
                     dir('test-framework') {
                         deleteDir()
                     }
@@ -66,7 +68,6 @@ pipeline {
         stage('deploy-to-preprod') {
             steps {
                 script {
-                    echo ">>> Stage: Deploy to PREPROD"
                     deployScript.deploy('preprod', 7003)
                 }
             }
@@ -75,7 +76,6 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    echo ">>> Stage: Run tests on PREPROD"
                     dir('test-framework') {
                         deleteDir()
                     }
@@ -88,7 +88,6 @@ pipeline {
         stage('deploy-to-prod') {
             steps {
                 script {
-                    echo ">>> Stage: Deploy to PROD"
                     deployScript.deploy('prod', 7004)
                 }
             }
@@ -97,7 +96,6 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    echo ">>> Stage: Run tests on PROD"
                     dir('test-framework') {
                         deleteDir()
                     }
