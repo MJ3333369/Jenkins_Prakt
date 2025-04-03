@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON_PATH = "C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+        PM2_PATH = "C:\\Users\\Dell\\AppData\\Roaming\\npm\\pm2.cmd"
+    }
+
     stages {
         stage('prepare-scripts') {
             steps {
@@ -16,9 +21,7 @@ pipeline {
             steps {
                 script {
                     echo ">>> Stage: Install dependencies"
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/python-greetings', branch: 'main')
-                    installScript('.')
+                    installScript('https://github.com/mtararujs/python-greetings')
                 }
             }
         }
@@ -26,6 +29,7 @@ pipeline {
         stage('deploy-to-dev') {
             steps {
                 script {
+                    echo ">>> Using deploy.groovy for environment: dev"
                     deployScript.deploy('dev', 7001)
                 }
             }
@@ -34,9 +38,8 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_dev')
+                    echo ">>> Running tests for dev"
+                    testScript.runTests('dev')
                 }
             }
         }
@@ -44,6 +47,7 @@ pipeline {
         stage('deploy-to-staging') {
             steps {
                 script {
+                    echo ">>> Using deploy.groovy for environment: staging"
                     deployScript.deploy('staging', 7002)
                 }
             }
@@ -52,9 +56,8 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_stg')
+                    echo ">>> Running tests for staging"
+                    testScript.runTests('staging')
                 }
             }
         }
@@ -62,6 +65,7 @@ pipeline {
         stage('deploy-to-preprod') {
             steps {
                 script {
+                    echo ">>> Using deploy.groovy for environment: preprod"
                     deployScript.deploy('preprod', 7003)
                 }
             }
@@ -70,9 +74,8 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_preprod')
+                    echo ">>> Running tests for preprod"
+                    testScript.runTests('preprod')
                 }
             }
         }
@@ -80,6 +83,7 @@ pipeline {
         stage('deploy-to-prod') {
             steps {
                 script {
+                    echo ">>> Using deploy.groovy for environment: prod"
                     deployScript.deploy('prod', 7004)
                 }
             }
@@ -88,9 +92,8 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_prod')
+                    echo ">>> Running tests for prod"
+                    testScript.runTests('prod')
                 }
             }
         }

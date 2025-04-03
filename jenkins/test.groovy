@@ -1,8 +1,6 @@
-def runTests(envTag) {
-    echo ">>> Using test.groovy for: ${envTag}"
-    dir('test-framework') {
-        bat 'npm install'
-        bat "npm run greetings ${envTag}"
-    }
+def runTests(String envName) {
+    def repo = "https://github.com/mtararujs/course-js-api-framework"
+    bat "git clone ${repo}"
+    bat "cd course-js-api-framework && npm install"
+    bat "cd course-js-api-framework && npm run greetings greetings_${envName}"
 }
-return this

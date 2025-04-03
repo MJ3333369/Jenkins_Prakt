@@ -1,6 +1,5 @@
-def call(String workingDir) {
-    echo ">>> Using install.groovy"
-    bat 'echo Current directory: %cd%'
-    bat '"C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pip.exe" install -r requirements.txt'
+def call(String repoUrl) {
+    bat "echo Current directory: %CD%"
+    bat "git clone ${repoUrl}"
+    bat "\"${env.PYTHON_PATH}\" -m pip install -r python-greetings/requirements.txt"
 }
-return this
