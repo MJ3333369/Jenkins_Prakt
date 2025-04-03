@@ -1,9 +1,14 @@
-def install(pipPath) {
-    bat """
-        echo Current directory: %CD%
-        git clone https://github.com/mtararujs/python-greetings .
-        dir
-        "${pipPath}" install -r requirements.txt
-    """
+def call(String workingDir) {
+    echo ">>> Using install.groovy"
+
+    def repo = "https://github.com/mtararujs/python-greetings"
+
+    // Klonē Python mikroservisu
+    bat "git clone ${repo} ${workingDir}"
+
+    dir(workingDir) {
+        bat 'echo Current directory: %cd%'
+        bat '"C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pip.exe" install -r requirements.txt'
+    }
 }
 return this

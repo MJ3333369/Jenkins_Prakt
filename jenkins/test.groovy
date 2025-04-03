@@ -1,9 +1,14 @@
-def runTests(envName) {
-    bat """
-        git clone https://github.com/mtararujs/course-js-api-framework .
-        cd course-js-api-framework
-        npm install
-        npm run greetings greetings_${envName}
-    """
+def run(String env) {
+    echo ">>> Using test.groovy for environment: ${env}"
+
+    def repo = "https://github.com/mtararujs/course-js-api-framework"
+
+    // Klonē testēšanas framework repozitoriju
+    bat "git clone ${repo} test-framework"
+
+    dir("test-framework") {
+        bat "npm install"
+        bat "npm run greetings greetings_${env}"
+    }
 }
 return this
