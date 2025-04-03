@@ -16,11 +16,9 @@ pipeline {
             steps {
                 script {
                     echo ">>> Stage: Install dependencies"
-                    dir('greetings') {
-                        deleteDir()
-                    }
-                    git(url: 'https://github.com/mtararujs/python-greetings', branch: 'main', changelog: false, poll: false)
-                    installScript('greetings')
+                    deleteDir()
+                    git(url: 'https://github.com/mtararujs/python-greetings', branch: 'main')
+                    installScript('.')
                 }
             }
         }
@@ -36,10 +34,8 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    dir('test-framework') {
-                        deleteDir()
-                    }
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false)
+                    deleteDir()
+                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
                     testScript.runTests('greetings_dev')
                 }
             }
@@ -56,10 +52,8 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    dir('test-framework') {
-                        deleteDir()
-                    }
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false)
+                    deleteDir()
+                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
                     testScript.runTests('greetings_stg')
                 }
             }
@@ -76,10 +70,8 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    dir('test-framework') {
-                        deleteDir()
-                    }
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false)
+                    deleteDir()
+                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
                     testScript.runTests('greetings_preprod')
                 }
             }
@@ -96,10 +88,8 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    dir('test-framework') {
-                        deleteDir()
-                    }
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main', changelog: false, poll: false)
+                    deleteDir()
+                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
                     testScript.runTests('greetings_prod')
                 }
             }
