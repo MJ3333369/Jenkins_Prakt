@@ -11,7 +11,7 @@ def run(String env) {
 
     dir("test-framework") {
         bat "npm install"
-        bat "npm run greetings greetings_${env}"
+        bat "npm run greetings greetings_${env == 'staging' ? 'stg' : env}"
     }
 }
 return this
