@@ -1,10 +1,17 @@
 pipeline {
     agent any
 
+    environment {
+        PM2 = "C:\\Users\\Dell\\AppData\\Roaming\\npm\\pm2.cmd"
+        PYTHON = "C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+        PIP = "C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pip.exe"
+    }
+
     stages {
         stage('prepare-scripts') {
             steps {
                 script {
+                    echo '>>> Loading deploy, install and test scripts'
                     deployScript = load 'jenkins/deploy.groovy'
                     installScript = load 'jenkins/install.groovy'
                     testScript = load 'jenkins/test.groovy'
@@ -15,10 +22,8 @@ pipeline {
         stage('install-pip-deps') {
             steps {
                 script {
-                    echo ">>> Stage: Install dependencies"
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/python-greetings', branch: 'main')
-                    installScript('.')
+                    echo '>>> Stage: Install dependencies'
+                    installScript.install(PIP)
                 }
             }
         }
@@ -26,7 +31,8 @@ pipeline {
         stage('deploy-to-dev') {
             steps {
                 script {
-                    deployScript.deploy('dev', 7001)
+                    echo '>>> Stage: Deploy to DEV'
+                    deployScript.deploy("dev", PM2, PYTHON, 7001)
                 }
             }
         }
@@ -34,9 +40,8 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_dev')
+                    echo '>>> Stage: Test on DEV'
+                    testScript.runTests("dev")
                 }
             }
         }
@@ -44,7 +49,8 @@ pipeline {
         stage('deploy-to-staging') {
             steps {
                 script {
-                    deployScript.deploy('staging', 7002)
+                    echo '>>> Stage: Deploy to STAGING'
+                    deployScript.deploy("staging", PM2, PYTHON, 7002)
                 }
             }
         }
@@ -52,9 +58,8 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_stg')
+                    echo '>>> Stage: Test on STAGING'
+                    testScript.runTests("staging")
                 }
             }
         }
@@ -62,7 +67,8 @@ pipeline {
         stage('deploy-to-preprod') {
             steps {
                 script {
-                    deployScript.deploy('preprod', 7003)
+                    echo '>>> Stage: Deploy to PREPROD'
+                    deployScript.deploy("preprod", PM2, PYTHON, 7003)
                 }
             }
         }
@@ -70,9 +76,8 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_preprod')
+                    echo '>>> Stage: Test on PREPROD'
+                    testScript.runTests("preprod")
                 }
             }
         }
@@ -80,7 +85,8 @@ pipeline {
         stage('deploy-to-prod') {
             steps {
                 script {
-                    deployScript.deploy('prod', 7004)
+                    echo '>>> Stage: Deploy to PROD'
+                    deployScript.deploy("prod", PM2, PYTHON, 7004)
                 }
             }
         }
@@ -88,9 +94,8 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    deleteDir()
-                    git(url: 'https://github.com/mtararujs/course-js-api-framework', branch: 'main')
-                    testScript.runTests('greetings_prod')
+                    echo '>>> Stage: Test on PROD'
+                    testScript.runTests("prod")
                 }
             }
         }

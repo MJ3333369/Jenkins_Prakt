@@ -1,9 +1,9 @@
-def deploy(envName, port) {
-    echo ">>> Using deploy.groovy for environment: ${envName}"
-    dir('.') {
-        bat("""C:\\Users\\Dell\\AppData\\Roaming\\npm\\pm2.cmd delete greetings-app-${envName} || exit 0""")
-        bat("""C:\\Users\\Dell\\AppData\\Roaming\\npm\\pm2.cmd start app.py --name greetings-app-${envName} --interpreter C:\\Users\\Dell\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -- --port ${port}""")
-        bat("""C:\\Users\\Dell\\AppData\\Roaming\\npm\\pm2.cmd list""")
-    }
+def deploy(envName, pm2Path, pythonPath, port) {
+    bat """
+        git clone https://github.com/mtararujs/python-greetings .
+        ${pm2Path} delete greetings-app-${envName} || exit 0
+        ${pm2Path} start app.py --name greetings-app-${envName} --interpreter ${pythonPath} -- --port ${port}
+        ${pm2Path} list
+    """
 }
 return this
